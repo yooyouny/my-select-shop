@@ -1,5 +1,6 @@
 package com.sparta.myselectshop.domain.product.domain;
 
+import com.sparta.myselectshop.domain.folder.domain.ProductFolder;
 import com.sparta.myselectshop.domain.product.dto.ItemDto;
 import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
@@ -13,9 +14,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +48,9 @@ public class Product extends DateTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductFolder> productFolderList = new ArrayList<>();
+
     @Builder
     public Product(String title, String image, String link, Long lprice, User user) {
         this.title = title;
@@ -59,6 +66,16 @@ public class Product extends DateTimeEntity {
                 .image(requestDto.image())
                 .link(requestDto.link())
                 .lprice(requestDto.lprice())
+                .user(user)
+                .build();
+    }
+
+    public static Product fromItemDto(ItemDto itemDto, User user){
+        return Product.builder()
+                .title(itemDto.title())
+                .image(itemDto.image())
+                .link(itemDto.link())
+                .lprice(itemDto.lprice())
                 .user(user)
                 .build();
     }
