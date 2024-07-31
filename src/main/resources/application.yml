@@ -16,9 +16,16 @@ spring:
           show_sql: true
           format_sql: true
           use_sql_comments: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          audiences:
 openapi:
   naver:
     client-id: ${API_NAVER_CLIENT}
     client-secret: ${API_NAVER_SECRET}
-
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
 admin-token: ${ADMIN_TOKEN}

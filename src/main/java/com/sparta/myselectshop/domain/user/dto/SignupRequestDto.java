@@ -1,10 +1,13 @@
 package com.sparta.myselectshop.domain.user.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class SignupRequestDto {
     @NotBlank(message = "회원가입 시 유저이름은 필수 입니다")
@@ -14,6 +17,7 @@ public class SignupRequestDto {
     private String password;
 
     @NotBlank(message = "회원가입 시 이메일은 필수 입니다")
+    @Email
     private String email;
 
     private boolean admin = false;

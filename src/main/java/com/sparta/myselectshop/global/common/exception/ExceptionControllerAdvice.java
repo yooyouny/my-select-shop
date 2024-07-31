@@ -30,14 +30,6 @@ public class ExceptionControllerAdvice {// 응답 구조 통일성을 위한 전
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> notValidExceptionHandler(MethodArgumentNotValidException e) {
         log.error("Error occurs {}", e.toString());
-        log.info(e.getBindingResult().getGlobalError().getObjectName());
-
-        String className = e.getBindingResult().getGlobalError().getObjectName();
-        if(className.contains("Signup"))
-            return ResponseEntity
-                .status(HttpStatus.TEMPORARY_REDIRECT)
-                .body("redirect:/api/user/signup");
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
