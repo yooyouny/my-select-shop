@@ -1,6 +1,7 @@
 package com.sparta.myselectshop.domain.product.application;
 
 import com.sparta.myselectshop.domain.product.domain.Product;
+import com.sparta.myselectshop.domain.product.dto.ItemDto;
 import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductResponseDto;
@@ -32,6 +33,13 @@ public class ProductService {
                 new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
         product.updatePrice(requestDto);
         return ProductResponseDto.of(product);
+    }
+
+    @Transactional
+    public void updateProductPriceByScheduler(Long id, ItemDto itemDto){
+        Product product = productRepository.findById(id).orElseThrow( () ->
+                new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
+        product.updatePrice(itemDto);
     }
 
     public List<ProductResponseDto> getProducts(){

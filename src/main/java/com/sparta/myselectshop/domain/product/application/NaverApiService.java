@@ -30,7 +30,6 @@ public class NaverApiService implements OpenApiService{
     }
     public List<ItemDto> searchItems(String query){
         URI uri = getUri(query);
-        log.info("uri = {}", uri);
         RequestEntity<Void> requestEntity = RequestEntity
                 .get(uri)
                 .header("X-Naver-Client-Id", clientId)
@@ -41,6 +40,7 @@ public class NaverApiService implements OpenApiService{
         log.info("status code : {}", responseEntity.getStatusCode());
         return fromJsonToItems(responseEntity.getBody());
     }
+
     public static List<ItemDto> fromJsonToItems(String responseStr){
         JSONArray items = new JSONObject(responseStr).getJSONArray("items");
         List<ItemDto> itemList = new ArrayList<>();

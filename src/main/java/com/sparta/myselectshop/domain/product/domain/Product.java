@@ -1,5 +1,6 @@
 package com.sparta.myselectshop.domain.product.domain;
 
+import com.sparta.myselectshop.domain.product.dto.ItemDto;
 import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
 import com.sparta.myselectshop.global.common.DateTimeEntity;
@@ -54,5 +55,8 @@ public class Product extends DateTimeEntity {
 
     public void updatePrice(ProductPriceRequestDto requestDto){
         this.myPrice = requestDto.myprice();
+    }
+    public void updatePrice(ItemDto itemDto){
+        this.lprice = itemDto.lprice();
     }
 }
