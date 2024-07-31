@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +47,12 @@ public class ProductService {
         product.updatePrice(itemDto);
     }
 
-    public List<ProductResponseDto> getProducts(User user){
-        List<Product> productList = productRepository.findAllByUser(user);
-        return productList.stream()
-                .map(product -> ProductResponseDto.of(product))
-                .collect(Collectors.toList());
+    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isAsc){
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Product> productList = productRepository.findAllByUser(user, pageable);
+        return productList.map(ProductResponseDto::of);
     }
 
     public List<ProductResponseDto> getAllProducts(){
