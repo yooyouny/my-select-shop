@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 @RequestMapping("/api/products")
 public class ProductController {
     private final ProductService productService;

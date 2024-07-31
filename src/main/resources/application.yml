@@ -20,3 +20,5 @@ openapi:
   naver:
     client-id: ${API_NAVER_CLIENT}
     client-secret: ${API_NAVER_SECRET}
+
+admin-token: ${ADMIN_TOKEN}
