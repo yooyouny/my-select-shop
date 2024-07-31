@@ -6,6 +6,7 @@ import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductResponseDto;
 import com.sparta.myselectshop.domain.product.repository.ProductRepository;
+import com.sparta.myselectshop.domain.user.domain.User;
 import com.sparta.myselectshop.global.common.ErrorCode;
 import com.sparta.myselectshop.global.common.exception.CustomException;
 import java.util.List;
@@ -21,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public ProductResponseDto createProduct(ProductRequestDto requestDto){
-        Product product = Product.fromDto(requestDto);
+    public ProductResponseDto createProduct(ProductRequestDto requestDto, User user){
+        Product product = Product.fromDto(requestDto, user);
         productRepository.save(product);
         return ProductResponseDto.of(product);
     }
@@ -42,8 +43,8 @@ public class ProductService {
         product.updatePrice(itemDto);
     }
 
-    public List<ProductResponseDto> getProducts(){
-        List<Product> productList = productRepository.findAll();
+    public List<ProductResponseDto> getProducts(User user){
+        List<Product> productList = productRepository.findAllByUser(user);
         return productList.stream()
                 .map(product -> ProductResponseDto.of(product))
                 .collect(Collectors.toList());

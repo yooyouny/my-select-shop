@@ -4,9 +4,11 @@ import com.sparta.myselectshop.domain.product.application.ProductService;
 import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductResponseDto;
+import com.sparta.myselectshop.domain.user.domain.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     private final ProductService productService;
     @PostMapping
-    public ProductResponseDto createProduct(@RequestBody @Valid ProductRequestDto requestDto) {
-        return productService.createProduct(requestDto);
+    public ProductResponseDto createProduct(@RequestBody @Valid ProductRequestDto requestDto,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return productService.createProduct(requestDto, userDetails.getUser());
     }
 
     @PutMapping("/{id}")
@@ -32,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponseDto> getProducts(){
-        return productService.getProducts();
+    public List<ProductResponseDto> getProducts(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return productService.getProducts(userDetails.getUser());
     }
 }

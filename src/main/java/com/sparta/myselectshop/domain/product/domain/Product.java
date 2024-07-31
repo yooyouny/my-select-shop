@@ -3,12 +3,16 @@ package com.sparta.myselectshop.domain.product.domain;
 import com.sparta.myselectshop.domain.product.dto.ItemDto;
 import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
+import com.sparta.myselectshop.domain.user.domain.User;
 import com.sparta.myselectshop.global.common.DateTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,20 +40,26 @@ public class Product extends DateTimeEntity {
     @Column
     private int myPrice;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Builder
-    public Product(String title, String image, String link, Long lprice) {
+    public Product(String title, String image, String link, Long lprice, User user) {
         this.title = title;
         this.image = image;
         this.link = link;
         this.lprice = lprice;
+        this.user = user;
     }
 
-    public static Product fromDto(ProductRequestDto requestDto){
+    public static Product fromDto(ProductRequestDto requestDto, User user){
         return Product.builder()
                 .title(requestDto.title())
                 .image(requestDto.image())
                 .link(requestDto.link())
                 .lprice(requestDto.lprice())
+                .user(user)
                 .build();
     }
 
