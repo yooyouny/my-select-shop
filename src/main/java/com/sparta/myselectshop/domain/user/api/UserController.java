@@ -1,5 +1,6 @@
 package com.sparta.myselectshop.domain.user.api;
 
+import com.sparta.myselectshop.domain.folder.application.FolderService;
 import com.sparta.myselectshop.domain.user.application.UserService;
 import com.sparta.myselectshop.domain.user.domain.UserDetailsImpl;
 import com.sparta.myselectshop.domain.user.domain.UserRole;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final FolderService folderService;
     @GetMapping("/user/login-page")
     public String loginPage(){
         return "login";
@@ -45,6 +48,13 @@ public class UserController {
 
         userService.signUp(signupRequestDto);
         return "redirect:/api/user/login-page";
+    }
+
+    @GetMapping("/user-folder")
+    public String getUserInfo(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("folders", folderService.getFolders(userDetails.getUser()));
+
+        return "index :: #fragment";
     }
 
     @GetMapping("/user-info")

@@ -29,7 +29,7 @@ public class ProductService {
     public ProductResponseDto createProduct(ProductRequestDto requestDto, User user){
         Product product = Product.fromDto(requestDto, user);
         productRepository.save(product);
-        return ProductResponseDto.of(product);
+        return new ProductResponseDto(product);
     }
 
     @Transactional
@@ -37,7 +37,7 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow( () ->
                 new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
         product.updatePrice(requestDto);
-        return ProductResponseDto.of(product);
+        return new ProductResponseDto(product);
     }
 
     @Transactional
@@ -52,13 +52,13 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
         Page<Product> productList = productRepository.findAllByUser(user, pageable);
-        return productList.map(ProductResponseDto::of);
+        return productList.map(ProductResponseDto::new);
     }
 
     public List<ProductResponseDto> getAllProducts(){
         List<Product> productList = productRepository.findAll();
         return productList.stream()
-                .map(product -> ProductResponseDto.of(product))
+                .map(product -> new ProductResponseDto(product))
                 .collect(Collectors.toList());
     }
 }

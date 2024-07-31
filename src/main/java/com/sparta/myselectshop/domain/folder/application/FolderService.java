@@ -1,10 +1,12 @@
 package com.sparta.myselectshop.domain.folder.application;
 
 import com.sparta.myselectshop.domain.folder.domain.Folder;
+import com.sparta.myselectshop.domain.folder.dto.FolderResponseDto;
 import com.sparta.myselectshop.domain.folder.repository.FolderRepository;
 import com.sparta.myselectshop.domain.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,12 @@ import org.springframework.stereotype.Service;
 public class FolderService {
     private final FolderRepository folderRepository;
 
+    public List<FolderResponseDto> getFolders(User user) {
+        List<Folder> folderList = folderRepository.findAllByUser(user);
+        return folderList.stream()
+                .map(folder -> FolderResponseDto.of(folder))
+                .collect(Collectors.toList());
+    }
     public void addFolders(List<String> folderNames, User user){
         List<Folder> existedFolders = folderRepository.findAllByUserAndNameIn(user, folderNames);
         List<Folder> folderList = new ArrayList<>();
