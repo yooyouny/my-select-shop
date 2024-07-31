@@ -7,6 +7,8 @@ import com.sparta.myselectshop.domain.product.dto.ProductResponseDto;
 import com.sparta.myselectshop.domain.product.repository.ProductRepository;
 import com.sparta.myselectshop.global.common.ErrorCode;
 import com.sparta.myselectshop.global.common.exception.CustomException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,5 +32,12 @@ public class ProductService {
                 new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
         product.updatePrice(requestDto);
         return ProductResponseDto.of(product);
+    }
+
+    public List<ProductResponseDto> getProducts(){
+        List<Product> productList = productRepository.findAll();
+        return productList.stream()
+                .map(product -> ProductResponseDto.of(product))
+                .collect(Collectors.toList());
     }
 }
