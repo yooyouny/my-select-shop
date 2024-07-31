@@ -49,4 +49,11 @@ public class ProductService {
                 .map(product -> ProductResponseDto.of(product))
                 .collect(Collectors.toList());
     }
+
+    public List<ProductResponseDto> getAllProducts(){
+        List<Product> productList = productRepository.findAll();
+        return productList.stream()
+                .map(product -> ProductResponseDto.of(product))
+                .collect(Collectors.toList());
+    }
 }

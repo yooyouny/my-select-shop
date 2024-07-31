@@ -20,22 +20,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/products")
+@RequestMapping("/api")
 public class ProductController {
     private final ProductService productService;
-    @PostMapping
+    @PostMapping("/products")
     public ProductResponseDto createProduct(@RequestBody @Valid ProductRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return productService.createProduct(requestDto, userDetails.getUser());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/products/{id}")
     public ProductResponseDto updateProduct(@PathVariable Long id, @RequestBody @Valid ProductPriceRequestDto requestDto) {
         return productService.updateProductPrice(id, requestDto);
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public List<ProductResponseDto> getProducts(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return productService.getProducts(userDetails.getUser());
     }
+
+    @GetMapping("/admin/products")
+    public List<ProductResponseDto> getAllProducts(){
+        return productService.getAllProducts();
+    }
+
 }
