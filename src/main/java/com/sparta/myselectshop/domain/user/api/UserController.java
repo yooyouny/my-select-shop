@@ -1,9 +1,13 @@
 package com.sparta.myselectshop.domain.user.api;
 
 import com.sparta.myselectshop.domain.user.application.UserService;
+import com.sparta.myselectshop.domain.user.domain.UserDetailsImpl;
+import com.sparta.myselectshop.domain.user.domain.UserRole;
 import com.sparta.myselectshop.domain.user.dto.SignupRequestDto;
+import com.sparta.myselectshop.domain.user.dto.UserInfoDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,5 +32,11 @@ public class UserController {
     public String signup(@RequestBody @Valid SignupRequestDto signupRequestDto){
         userService.signUp(signupRequestDto);
         return "redirect:/api/user/login-page";
+    }
+
+    @GetMapping("/user-info")
+    public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetail){
+        boolean isAdmin = (userDetail.getUser().getRole() == UserRole.ADMIN);
+        return UserInfoDto.of(userDetail.getUser().getUserName(), isAdmin);
     }
 }
