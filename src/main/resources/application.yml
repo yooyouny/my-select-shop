@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: myselectshop
+
+  datasource:
+    url: ${DATASOURCE_URL}/${DATASOURCE_DBNAME}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          show_sql: true
+          format_sql: true
+          use_sql_comments: true
+openapi:
+  naver:
+    client-id: ${API_NAVER_CLIENT}
+    client-secret: ${API_NAVER_SECRET}
