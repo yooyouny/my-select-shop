@@ -9,7 +9,8 @@ public record ProductResponseDto(
         @NotBlank String title,
         @NotBlank String image,
         @NotBlank String link,
-        @NotNull Long lprice
+        @NotNull Long lprice,
+        int myPrice
 ) {
     public static ProductResponseDto of(Product product){
         return new ProductResponseDto(
@@ -17,7 +18,8 @@ public record ProductResponseDto(
                 product.getTitle(),
                 product.getImage(),
                 product.getLink(),
-                product.getLprice()
+                product.getLprice(),
+                product.getMyPrice()
         );
     }
 }

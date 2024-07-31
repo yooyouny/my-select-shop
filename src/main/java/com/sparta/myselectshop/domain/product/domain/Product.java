@@ -1,5 +1,6 @@
 package com.sparta.myselectshop.domain.product.domain;
 
+import com.sparta.myselectshop.domain.product.dto.ProductPriceRequestDto;
 import com.sparta.myselectshop.domain.product.dto.ProductRequestDto;
 import com.sparta.myselectshop.global.common.DateTimeEntity;
 import jakarta.persistence.Column;
@@ -31,6 +32,8 @@ public class Product extends DateTimeEntity {
     private String link;
     @Column @NotNull
     private Long lprice;
+    @Column
+    private int myPrice;
 
     @Builder
     public Product(String title, String image, String link, Long lprice) {
@@ -47,5 +50,9 @@ public class Product extends DateTimeEntity {
                 .link(requestDto.link())
                 .lprice(requestDto.lprice())
                 .build();
+    }
+
+    public void updatePrice(ProductPriceRequestDto requestDto){
+        this.myPrice = requestDto.myprice();
     }
 }
