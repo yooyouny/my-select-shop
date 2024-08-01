@@ -23,19 +23,19 @@ public class Scheduler {
 
     @Scheduled(cron = "0 0 1 * * *")// 초, 분, 시, 일, 월, 주 (매일 새벽 1시)
     public void updateProductPrice() {
-        List<Product> productList = productRepository.findAll(); // TODO :: 의존성 질문
+        List<Product> productList = productRepository.findAll();
         productList.forEach(product -> {
             try {
                 TimeUnit.SECONDS.sleep(1);
 
                 List<ItemDto> searchedItems = openApiService.searchItems(product.getTitle());
-                if(!searchedItems.isEmpty()){
+                if (!searchedItems.isEmpty()) {
                     ItemDto item = searchedItems.get(0);
                     productService.updateProductPriceByScheduler(product.getId(), item);
                     log.info("update product price : {}", product.getTitle());
                 }
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();// TODO :: 인터럽트를 처리하는 주체
+                Thread.currentThread().interrupt();
                 log.error("Thread interrupted: {}", e.getMessage());
             } catch (Exception e) {
                 log.error("Failed to update product {}: {}", product.getId(), e.getMessage());

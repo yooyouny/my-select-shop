@@ -27,19 +27,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
     private final UserService userService;
     private final FolderService folderService;
+
     @GetMapping("/user/login-page")
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
+
     @GetMapping("/user/signup")
-    public String signupPage(){
+    public String signupPage() {
         return "signup";
     }
 
     @PostMapping("/user/signup")
     public String signup(@Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
+        if (fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
@@ -59,7 +61,7 @@ public class UserController {
 
     @GetMapping("/user-info")
     @ResponseBody
-    public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetail){
+    public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetail) {
         boolean isAdmin = (userDetail.getUser().getRole() == UserRole.ADMIN);
         return UserInfoDto.of(userDetail.getUser().getUserName(), isAdmin);
     }

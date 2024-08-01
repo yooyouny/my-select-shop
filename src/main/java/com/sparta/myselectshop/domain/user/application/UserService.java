@@ -21,7 +21,7 @@ public class UserService {
     @Value("${admin-token}")
     private String adminToken;
 
-    public void signUp(SignupRequestDto requestDto){
+    public void signUp(SignupRequestDto requestDto) {
         userRepository.findByUserNameOrEmail(requestDto.getUsername(), requestDto.getEmail()).ifPresent(it -> {
             throw new CustomException(ErrorCode.DUPLICATED_USER);
         });
@@ -37,10 +37,11 @@ public class UserService {
                 : UserRole.USER;
     }
 
-    private UserRole validateAdminToken(String requestToken){
-        if(adminToken.equals(requestToken))
+    private UserRole validateAdminToken(String requestToken) {
+        if (adminToken.equals(requestToken)) {
             return UserRole.ADMIN;
-        else
+        } else {
             throw new CustomException(ErrorCode.INVALID_ADMIN_TOKEN);
+        }
     }
 }

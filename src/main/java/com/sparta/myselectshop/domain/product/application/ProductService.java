@@ -27,28 +27,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public ProductResponseDto createProduct(ProductRequestDto requestDto, User user){
+    public ProductResponseDto createProduct(ProductRequestDto requestDto, User user) {
         Product product = Product.fromDto(requestDto, user);
         productRepository.save(product);
         return new ProductResponseDto(product);
     }
 
     @Transactional
-    public ProductResponseDto updateProductPrice(Long id, ProductPriceRequestDto requestDto){
-        Product product = productRepository.findById(id).orElseThrow( () ->
+    public ProductResponseDto updateProductPrice(Long id, ProductPriceRequestDto requestDto) {
+        Product product = productRepository.findById(id).orElseThrow(() ->
                 new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
         product.updatePrice(requestDto);
         return new ProductResponseDto(product);
     }
 
     @Transactional
-    public void updateProductPriceByScheduler(Long id, ItemDto itemDto){
-        Product product = productRepository.findById(id).orElseThrow( () ->
+    public void updateProductPriceByScheduler(Long id, ItemDto itemDto) {
+        Product product = productRepository.findById(id).orElseThrow(() ->
                 new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
         product.updatePrice(itemDto);
     }
 
-    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isAsc){
+    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
@@ -56,7 +56,7 @@ public class ProductService {
         return productList.map(ProductResponseDto::new);
     }
 
-    public List<ProductResponseDto> getAllProducts(){
+    public List<ProductResponseDto> getAllProducts() {
         List<Product> productList = productRepository.findAll();
         return productList.stream()
                 .map(product -> new ProductResponseDto(product))
@@ -64,11 +64,12 @@ public class ProductService {
     }
 
     public Page<ProductResponseDto> getProductsInFolder(Long folderId, int page, int size, String sortBy,
-                                                        boolean isAsc, User user){
+                                                        boolean isAsc, User user) {
         Sort.Direction direction = isAsc ? Direction.ASC : Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-        Page<Product> productsInFolder = productRepository.findAllByUserAndProductFolderList_FolderId(user, folderId, pageable);
+        Page<Product> productsInFolder = productRepository.findAllByUserAndProductFolderList_FolderId(user, folderId,
+                pageable);
         return productsInFolder.map(ProductResponseDto::new);
     }
 }

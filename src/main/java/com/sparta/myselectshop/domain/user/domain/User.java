@@ -51,7 +51,7 @@ public class User extends DateTimeEntity {
         this.role = role;
     }
 
-    public static User of(SignupRequestDto requestDto, String encodedPassword, UserRole role){
+    public static User of(SignupRequestDto requestDto, String encodedPassword, UserRole role) {
         return User.builder()
                 .userName(requestDto.getUsername())
                 .password(encodedPassword)

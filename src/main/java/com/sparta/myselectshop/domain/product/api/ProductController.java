@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ProductController {
     private final ProductService productService;
+
     @PostMapping("/products")
     public ProductResponseDto createProduct(@RequestBody @Valid ProductRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -31,7 +32,8 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
-    public ProductResponseDto updateProduct(@PathVariable Long id, @RequestBody @Valid ProductPriceRequestDto requestDto) {
+    public ProductResponseDto updateProduct(@PathVariable Long id,
+                                            @RequestBody @Valid ProductPriceRequestDto requestDto) {
         return productService.updateProductPrice(id, requestDto);
     }
 
@@ -41,12 +43,12 @@ public class ProductController {
             @RequestParam("size") int size,
             @RequestParam("sortBy") String sortBy,
             @RequestParam("isAsc") boolean isAsc,
-            @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return productService.getProducts(userDetails.getUser(),  page-1, size, sortBy, isAsc);
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return productService.getProducts(userDetails.getUser(), page - 1, size, sortBy, isAsc);
     }
 
     @GetMapping("/admin/products")
-    public List<ProductResponseDto> getAllProducts(){
+    public List<ProductResponseDto> getAllProducts() {
         return productService.getAllProducts();
     }
 
@@ -58,10 +60,10 @@ public class ProductController {
             @RequestParam String sortBy,
             @RequestParam boolean isAsc,
             @AuthenticationPrincipal UserDetailsImpl userDetails
-    ){
+    ) {
         return productService.getProductsInFolder(
                 folderId,
-                page-1,
+                page - 1,
                 size,
                 sortBy,
                 isAsc,

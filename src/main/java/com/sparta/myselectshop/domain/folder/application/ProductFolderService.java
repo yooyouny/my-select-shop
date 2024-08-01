@@ -21,8 +21,8 @@ public class ProductFolderService {
     private final FolderRepository folderRepository;
     private final ProductFolderRepository productFolderRepository;
 
-    public void addFolder(Long productId, Long folderId, User user){
-        Product product = productRepository.findById(productId).orElseThrow( () ->
+    public void addFolder(Long productId, Long folderId, User user) {
+        Product product = productRepository.findById(productId).orElseThrow(() ->
                 new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
         Folder folder = folderRepository.findById(folderId).orElseThrow(() ->
                 new CustomException(ErrorCode.NOT_FOUND_FOLDER));
@@ -33,8 +33,9 @@ public class ProductFolderService {
 
         productFolderRepository.save(ProductFolder.of(product, folder));
     }
-    private void checkOwnership(Product product, Folder folder, User user){
-        if(product.getId() != user.getId() || folder.getUser().getId() != user.getId()){
+
+    private void checkOwnership(Product product, Folder folder, User user) {
+        if (product.getId() != user.getId() || folder.getUser().getId() != user.getId()) {
             throw new CustomException(ErrorCode.INVALID_PERMISSION);
         }
     }

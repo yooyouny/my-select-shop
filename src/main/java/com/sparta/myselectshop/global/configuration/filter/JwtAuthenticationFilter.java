@@ -18,12 +18,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j(topic = "Login")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtils utils;
-    public JwtAuthenticationFilter(JwtUtils utils){
+
+    public JwtAuthenticationFilter(JwtUtils utils) {
         this.utils = utils;
         setFilterProcessesUrl("/api/user/login");
     }
+
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
             return getAuthenticationManager().authenticate(
@@ -50,7 +53,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) {
         response.setStatus(401);
     }
 
