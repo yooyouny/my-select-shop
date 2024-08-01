@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,5 +61,14 @@ public class ProductService {
         return productList.stream()
                 .map(product -> new ProductResponseDto(product))
                 .collect(Collectors.toList());
+    }
+
+    public Page<ProductResponseDto> getProductsInFolder(Long folderId, int page, int size, String sortBy,
+                                                        boolean isAsc, User user){
+        Sort.Direction direction = isAsc ? Direction.ASC : Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Product> productsInFolder = productRepository.findAllByUserAndProductFolderList_FolderId(user, folderId, pageable);
+        return productsInFolder.map(ProductResponseDto::new);
     }
 }

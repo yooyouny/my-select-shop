@@ -38,4 +38,12 @@ public class ProductFolder {
         this.product = product;
         this.folder = folder;
     }
+
+    public static ProductFolder of(Product product, Folder folder){
+        return ProductFolder
+                .builder()
+                .product(product)
+                .folder(folder)
+                .build();
+    }
 }
