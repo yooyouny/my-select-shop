@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionControllerAdvice {// 응답 구조 통일성을 위한 전역 예외처리
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<?> customExceptionHandler(CustomException e){
+    public ResponseEntity<?> customExceptionHandler(CustomException e) {
         log.error("Error occurs {}", e.toString());
         return ResponseEntity.status(e.getErrorCode().getStatus())
                 .body(ApiResponse.error(e.getErrorCode()));
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e){
+    public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e) {
         log.error("Error occurs {}", e.toString());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR));

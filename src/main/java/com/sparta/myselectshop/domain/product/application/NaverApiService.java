@@ -13,22 +13,31 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @Slf4j(topic = "NAVER API")
-public class NaverApiService implements OpenApiService{
+public class NaverApiService implements OpenApiService {
     private final RestTemplate restTemplate;
     @Value("${openapi.naver.client-id}")
     private String clientId;
     @Value("${openapi.naver.client-secret}")
     private String clientSecret;
 
-    public NaverApiService(RestTemplateBuilder builder){
+    public NaverApiService(RestTemplateBuilder builder) {
         this.restTemplate = builder.build();
     }
-    public List<ItemDto> searchItems(String query){
+
+    public static List<ItemDto> fromJsonToItems(String responseStr) {
+        JSONArray items = new JSONObject(responseStr).getJSONArray("items");
+        List<ItemDto> itemList = new ArrayList<>();
+        for (Object o : items) {
+            itemList.add(new ItemDto((JSONObject) o));
+        }
+        return itemList;
+    }
+
+    public List<ItemDto> searchItems(String query) {
         URI uri = getUri(query);
         RequestEntity<Void> requestEntity = RequestEntity
                 .get(uri)
@@ -41,15 +50,7 @@ public class NaverApiService implements OpenApiService{
         return fromJsonToItems(responseEntity.getBody());
     }
 
-    public static List<ItemDto> fromJsonToItems(String responseStr){
-        JSONArray items = new JSONObject(responseStr).getJSONArray("items");
-        List<ItemDto> itemList = new ArrayList<>();
-        for(Object o : items){
-            itemList.add(new ItemDto((JSONObject) o));
-        }
-        return itemList;
-    }
-    private URI getUri(String query){
+    private URI getUri(String query) {
         return UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/shop.json")
@@ -59,7 +60,6 @@ public class NaverApiService implements OpenApiService{
                 .build()
                 .toUri();
     }
-
 
 
 }

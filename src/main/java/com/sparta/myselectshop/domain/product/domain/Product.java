@@ -33,13 +33,17 @@ public class Product extends DateTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column @NotBlank
+    @Column
+    @NotBlank
     private String title;
-    @Column @NotBlank
+    @Column
+    @NotBlank
     private String image;
-    @Column @NotBlank
+    @Column
+    @NotBlank
     private String link;
-    @Column @NotNull
+    @Column
+    @NotNull
     private Long lprice;
     @Column
     private int myPrice;
@@ -60,7 +64,7 @@ public class Product extends DateTimeEntity {
         this.user = user;
     }
 
-    public static Product fromDto(ProductRequestDto requestDto, User user){
+    public static Product fromDto(ProductRequestDto requestDto, User user) {
         return Product.builder()
                 .title(requestDto.title())
                 .image(requestDto.image())
@@ -70,7 +74,7 @@ public class Product extends DateTimeEntity {
                 .build();
     }
 
-    public static Product fromItemDto(ItemDto itemDto, User user){
+    public static Product fromItemDto(ItemDto itemDto, User user) {
         return Product.builder()
                 .title(itemDto.title())
                 .image(itemDto.image())
@@ -80,10 +84,11 @@ public class Product extends DateTimeEntity {
                 .build();
     }
 
-    public void updatePrice(ProductPriceRequestDto requestDto){
+    public void updatePrice(ProductPriceRequestDto requestDto) {
         this.myPrice = requestDto.myprice();
     }
-    public void updatePrice(ItemDto itemDto){
+
+    public void updatePrice(ItemDto itemDto) {
         this.lprice = itemDto.lprice();
     }
 }

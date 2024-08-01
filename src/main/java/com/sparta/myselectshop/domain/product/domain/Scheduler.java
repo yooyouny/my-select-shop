@@ -29,7 +29,7 @@ public class Scheduler {
                 TimeUnit.SECONDS.sleep(1);
 
                 List<ItemDto> searchedItems = openApiService.searchItems(product.getTitle());
-                if(!searchedItems.isEmpty()){
+                if (!searchedItems.isEmpty()) {
                     ItemDto item = searchedItems.get(0);
                     productService.updateProductPriceByScheduler(product.getId(), item);
                     log.info("update product price : {}", product.getTitle());

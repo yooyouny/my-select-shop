@@ -18,16 +18,19 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public static <T> ApiResponse<T> ok(HttpStatus status, String message, T data){
+    public static <T> ApiResponse<T> ok(HttpStatus status, String message, T data) {
         return new ApiResponse<>(status, message, data);
     }
-    public static <T> ApiResponse<T> ok(HttpStatus status, String message){
+
+    public static <T> ApiResponse<T> ok(HttpStatus status, String message) {
         return new ApiResponse<>(status, message, null);
     }
-    public static <T> ApiResponse<T> error(ErrorCode code){
+
+    public static <T> ApiResponse<T> error(ErrorCode code) {
         return new ApiResponse<>(code.getStatus(), code.getMessage(), null);
     }
-    public static <T> ApiResponse<T> error(HttpStatus status, String message){
+
+    public static <T> ApiResponse<T> error(HttpStatus status, String message) {
         return new ApiResponse<>(status, message, null);
     }
 

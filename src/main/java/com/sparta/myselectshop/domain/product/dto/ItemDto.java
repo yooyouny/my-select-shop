@@ -10,7 +10,7 @@ public record ItemDto(
         @NotBlank String image,
         @NotNull Long lprice
 ) {
-    public ItemDto(JSONObject object){
+    public ItemDto(JSONObject object) {
         this(
                 object.getString("title"),
                 object.getString("link"),

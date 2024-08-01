@@ -23,7 +23,8 @@ public class FolderService {
                 .map(folder -> FolderResponseDto.of(folder))
                 .collect(Collectors.toList());
     }
-    public void addFolders(List<String> folderNames, User user){
+
+    public void addFolders(List<String> folderNames, User user) {
         List<Folder> existedFolders = folderRepository.findAllByUserAndNameIn(user, folderNames);
         List<Folder> folderList = new ArrayList<>();
 
@@ -41,7 +42,7 @@ public class FolderService {
 
     private Boolean isExistFolderName(String folderName, List<Folder> existFolderList) {
         for (Folder existFolder : existFolderList) {
-            if(folderName.equals(existFolder.getName())) {
+            if (folderName.equals(existFolder.getName())) {
                 return true;
             }
         }

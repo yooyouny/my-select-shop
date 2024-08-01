@@ -39,7 +39,7 @@ public class ProductFolder {
         this.folder = folder;
     }
 
-    public static ProductFolder of(Product product, Folder folder){
+    public static ProductFolder of(Product product, Folder folder) {
         return ProductFolder
                 .builder()
                 .product(product)

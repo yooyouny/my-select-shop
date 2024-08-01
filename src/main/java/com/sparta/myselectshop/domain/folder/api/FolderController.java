@@ -25,12 +25,12 @@ public class FolderController {
 
     @PostMapping("/folders")
     public void addFolders(@RequestBody FolderRequestDto requestDto,
-                           @AuthenticationPrincipal UserDetailsImpl userDetails){
+                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         folderService.addFolders(requestDto.folderNames(), userDetails.getUser());
     }
 
     @GetMapping("/folders")
-    public List<FolderResponseDto> getFolders(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public List<FolderResponseDto> getFolders(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return folderService.getFolders(userDetails.getUser());
     }
 
